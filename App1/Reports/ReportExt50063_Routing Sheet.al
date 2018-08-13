@@ -1,0 +1,402 @@
+//HEB.123 MT 28052018. Muestra el tamaño lote ("") de la cabecera y el tiempo total ejecución lote ("") de cada línea.
+report 50063 "Routing Sheet Ext"
+{
+    // version NAVW111.00
+    UsageCategory = ReportsAndAnalysis;
+    ApplicationArea = Manufacturing;
+    DefaultLayout = RDLC;
+    RDLCLayout = './Reports/Layouts/Routing Sheet.rdl';
+    Caption = 'Routing Sheet';
+
+    dataset
+    {
+        dataitem(Item;Item)
+        {
+            DataItemTableView = SORTING("No.");
+            PrintOnlyIfDetail = true;
+            RequestFilterFields = "No.";
+            column(No_Item;"No.")
+            {
+            }
+            column(PrintComment;PrintComment)
+            {
+            }
+            column(PrintTool;PrintTool)
+            {
+            }
+            column(PrintPersonnel;PrintPersonnel)
+            {
+            }
+            column(PrintQualityMeasures;PrintQualityMeasures)
+            {
+            }
+            dataitem(Counter1;Integer)
+            {
+                DataItemTableView = SORTING(Number);
+                dataitem(Counter2;Integer)
+                {
+                    DataItemTableView = SORTING(Number)
+                                        WHERE(Number=CONST(1));
+                    PrintOnlyIfDetail = true;
+                    column(CompanyName;COMPANYPROPERTY.DISPLAYNAME)
+                    {
+                    }
+                    column(TodayFormatted;FORMAT(TODAY))
+                    {
+                    }
+                    column(CopyNo1;CopyNo - 1)
+                    {
+                    }
+                    column(CopyText;CopyText)
+                    {
+                    }
+                    column(No01_Item;Item."No.")
+                    {
+                    }
+                    column(Desc_Item;Item.Description)
+                    {
+                    }
+                    column(ProductionQuantity;ProductionQuantity)
+                    {
+                        DecimalPlaces = 0:5;
+                    }
+                    column(RtngNo_Item;Item."Routing No.")
+                    {
+                    }
+                    column(ActiveVersionCode;ActiveVersionCode)
+                    {
+                    }
+                    column(ActiveVersionText;ActiveVersionText)
+                    {
+                    }
+                    column(OutputNo;OutputNo)
+                    {
+                    }
+                    column(CurrReportPageNoCaption;CurrReportPageNoCaptionLbl)
+                    {
+                    }
+                    column(RoutingSheetCaption;RoutingSheetCaptionLbl)
+                    {
+                    }
+                    column(ProductionQuantityCaption;ProductionQuantityCaptionLbl)
+                    {
+                    }
+                    column(ItemRtngNoCaption;ItemRtngNoCaptionLbl)
+                    {
+                    }
+                    dataitem("Routing Header";"Routing Header")
+                    {
+                        DataItemTableView = SORTING("No.");
+                        PrintOnlyIfDetail = true;
+                        //-HEB.123
+                        column("Tamaño_Lote";"Tamaño Lote")
+                        {
+                        }
+                        //+HEB.123
+                        dataitem("Routing Line";"Routing Line")
+                        {
+                            DataItemLink = "Routing No."=FIELD("No.");
+                            DataItemTableView = SORTING("Routing No.","Version Code","Operation No.");
+                            column(OperationNo_RtngLine;"Operation No.")
+                            {
+                                IncludeCaption = true;
+                            }
+                            column(Type_RtngLine;Type)
+                            {
+                                IncludeCaption = true;
+                            }
+                            column(No_RtngLine;"No.")
+                            {
+                                IncludeCaption = true;
+                            }
+                            column(SendAheadQty_RtngLine;"Send-Ahead Quantity")
+                            {
+                                IncludeCaption = true;
+                            }
+                            column(SetupTime_RtngLine;"Setup Time")
+                            {
+                                IncludeCaption = true;
+                            }
+                            column(RunTime_RtngLine;"Run Time")
+                            {
+                                IncludeCaption = true;
+                            }
+                            column(MoveTime_RtngLine;"Move Time")
+                            {
+                                IncludeCaption = true;
+                            }
+                            column(TotalTime;TotalTime)
+                            {
+                                DecimalPlaces = 0:5;
+                            }
+                            column(RunTimeUOMCode_RtngLine;"Run Time Unit of Meas. Code")
+                            {
+                            }
+                            column(ScrapFactor_RtngLine;"Scrap Factor %")
+                            {
+                                IncludeCaption = true;
+                            }
+                            column(WaitTime_RtngLine;"Wait Time")
+                            {
+                                IncludeCaption = true;
+                            }
+                            column(TotalTimeCaption;TotalTimeCaptionLbl)
+                            {
+                            }
+                            column(RtngLnRunTimeUOMCodeCptn;RtngLnRunTimeUOMCodeCptnLbl)
+                            {
+                            }
+                            //-HEB.123
+                            column("Tiempo_total_ejecución_Lote";"Tiempo total ejecución Lote")
+                            {
+                            }
+                            //+HEB.123
+                            dataitem("Routing Comment Line";"Routing Comment Line")
+                            {
+                                DataItemLink = "Routing No."=FIELD("Routing No."),
+                                               "Version Code"=FIELD("Version Code"),
+                                               "Operation No."=FIELD("Operation No.");
+                                DataItemTableView = SORTING("Routing No.","Version Code","Operation No.","Line No.");
+                                column(LineComment_RtngComment;Comment)
+                                {
+                                }
+
+                                trigger OnPreDataItem();
+                                begin
+                                    SETRANGE("Routing No.",Item."Routing No.");
+
+                                    IF NOT PrintComment THEN
+                                      CurrReport.BREAK;
+                                end;
+                            }
+                            dataitem("Routing Tool";"Routing Tool")
+                            {
+                                DataItemLink = "Routing No."=FIELD("Routing No."),
+                                               "Version Code"=FIELD("Version Code"),
+                                               "Operation No."=FIELD("Operation No.");
+                                DataItemTableView = SORTING("Routing No.","Version Code","Operation No.","Line No.");
+                                column(Desc_RtngTool;Description)
+                                {
+                                }
+                                column(No_RtngTool;"No.")
+                                {
+                                }
+
+                                trigger OnPreDataItem();
+                                begin
+                                    IF NOT PrintTool THEN
+                                      CurrReport.BREAK;
+                                end;
+                            }
+                            dataitem("Routing Personnel";"Routing Personnel")
+                            {
+                                DataItemLink = "Routing No."=FIELD("Routing No."),
+                                               "Version Code"=FIELD("Version Code"),
+                                               "Operation No."=FIELD("Operation No.");
+                                DataItemTableView = SORTING("Routing No.","Version Code","Operation No.","Line No.");
+                                column(Desc_RtngPersonnel;Description)
+                                {
+                                }
+                                column(No_RtngPersonnel;"No.")
+                                {
+                                }
+
+                                trigger OnPreDataItem();
+                                begin
+                                    IF NOT PrintPersonnel THEN
+                                      CurrReport.BREAK;
+                                end;
+                            }
+                            dataitem("Routing Quality Measure";"Routing Quality Measure")
+                            {
+                                DataItemLink = "Routing No."=FIELD("Routing No."),
+                                               "Version Code"=FIELD("Version Code"),
+                                               "Operation No."=FIELD("Operation No.");
+                                DataItemTableView = SORTING("Routing No.","Version Code","Operation No.","Line No.");
+                                column(Desc_RtngQualityMeasure;Description)
+                                {
+                                }
+                                column(QMCode_RtngQltyMeasure;"Qlty Measure Code")
+                                {
+                                }
+
+                                trigger OnPreDataItem();
+                                begin
+                                    IF NOT PrintQualityMeasures THEN
+                                      CurrReport.BREAK;
+                                end;
+                            }
+
+                            trigger OnAfterGetRecord();
+                            var
+                                RunTimeFactor : Decimal;
+                            begin
+                                RunTimeFactor := CalendarMgt.TimeFactor("Run Time Unit of Meas. Code");
+                                TotalTime :=
+                                  ROUND(
+                                    "Setup Time" * CalendarMgt.TimeFactor("Setup Time Unit of Meas. Code") / RunTimeFactor +
+                                    "Wait Time" * CalendarMgt.TimeFactor("Wait Time Unit of Meas. Code") / RunTimeFactor +
+                                    "Move Time" * CalendarMgt.TimeFactor("Move Time Unit of Meas. Code") / RunTimeFactor +
+                                    ProductionQuantity * "Run Time",0.00001);
+                            end;
+
+                            trigger OnPreDataItem();
+                            begin
+                                IF ActiveVersionCode <> '' THEN
+                                  SETFILTER("Version Code",ActiveVersionCode)
+                                ELSE
+                                  SETFILTER("Version Code",'%1','');
+                            end;
+                        }
+
+                        trigger OnPreDataItem();
+                        begin
+                            SETRANGE("No.",Item."Routing No.");
+                        end;
+                    }
+                }
+
+                trigger OnAfterGetRecord();
+                begin
+                    IF CopyNo = LoopNo THEN
+                      CurrReport.BREAK;
+
+                    CopyNo := CopyNo + 1;
+
+                    IF CopyNo = 1 THEN
+                      CLEAR(CopyText)
+                    ELSE BEGIN
+                      CopyText := Text000;
+                      OutputNo += 1;
+                    END;
+                end;
+
+                trigger OnPreDataItem();
+                begin
+                    IF NumberOfCopies = 0 THEN
+                      LoopNo := 1
+                    ELSE
+                      LoopNo := 1 + NumberOfCopies;
+                    CopyNo := 0;
+                    OutputNo := 1;
+                end;
+            }
+
+            trigger OnAfterGetRecord();
+            begin
+                IF "Routing No." = '' THEN
+                  CurrReport.SKIP;
+
+                ActiveVersionCode :=
+                  VersionMgt.GetRtngVersion("Routing No.",WORKDATE,TRUE);
+
+                IF ActiveVersionCode <> '' THEN
+                  ActiveVersionText := Text001
+                ELSE
+                  ActiveVersionText := '';
+            end;
+        }
+    }
+
+    requestpage
+    {
+
+        layout
+        {
+            area(content)
+            {
+                group(Options)
+                {
+                    Caption = 'Options';
+                    field(ProductionQuantity;ProductionQuantity)
+                    {
+                        ApplicationArea = Manufacturing;
+                        Caption = 'Production Quantity';
+                        DecimalPlaces = 0:5;
+                        MinValue = 0;
+                        ToolTip = 'Specifies the quantity of items to manufacture for which you want the program to calculate the total time of the routing.';
+                    }
+                    field(PrintComment;PrintComment)
+                    {
+                        ApplicationArea = Manufacturing;
+                        Caption = 'Print';
+                        ToolTip = 'Specifies the fields that you want to have printed - Comments, Tools, Personnel, and/or Quality Measures.';
+                    }
+                    field(PrintTool;PrintTool)
+                    {
+                        ApplicationArea = Manufacturing;
+                        Caption = 'Tools';
+                        ToolTip = 'Specifies if you want to include tools.';
+                    }
+                    field(PrintPersonnel;PrintPersonnel)
+                    {
+                        ApplicationArea = Manufacturing;
+                        Caption = 'Personnel';
+                        ToolTip = 'Specifies if you want to include personnel.';
+                    }
+                    field(PrintQualityMeasures;PrintQualityMeasures)
+                    {
+                        ApplicationArea = Manufacturing;
+                        Caption = 'Quality Measures';
+                        ToolTip = 'Specifies if you want to include quality measures.';
+                    }
+                    field(NumberOfCopies;NumberOfCopies)
+                    {
+                        ApplicationArea = Manufacturing;
+                        Caption = 'No. of Copies';
+                        //DecimalPlaces = 0:0;
+                        MinValue = 0;
+                        ToolTip = 'Specifies how many copies of the document to print.';
+                    }
+                }
+            }
+        }
+
+        actions
+        {
+        }
+    }
+
+    labels
+    {
+        //-HEB.123
+        LotSizeLabel = 'Lot Quantity';
+        TotalLotRunTimeLabel = 'Total lot run time';
+        //+HEB.123
+    }
+
+    trigger OnInitReport();
+    begin
+        ProductionQuantity := 1;
+    end;
+
+    var
+        Text000 : Label 'Copy number:';
+        VersionMgt : Codeunit VersionManagement;
+        CalendarMgt : Codeunit CalendarManagement;
+        NumberOfCopies : Integer;
+        CopyNo : Integer;
+        CopyText : Text[30];
+        ActiveVersionText : Text[30];
+        LoopNo : Integer;
+        ProductionQuantity : Decimal;
+        PrintComment : Boolean;
+        PrintTool : Boolean;
+        PrintPersonnel : Boolean;
+        PrintQualityMeasures : Boolean;
+        TotalTime : Decimal;
+        ActiveVersionCode : Code[20];
+        Text001 : Label 'Active Version';
+        OutputNo : Integer;
+        //-HEB.123
+        LotSize : Decimal;
+        TotalLotRunTime : Decimal;
+        //+HEB.123
+        CurrReportPageNoCaptionLbl : Label 'Page';
+        RoutingSheetCaptionLbl : Label 'Routing Sheet';
+        ProductionQuantityCaptionLbl : Label 'Production Quantity';
+        ItemRtngNoCaptionLbl : Label 'Routing No.';
+        TotalTimeCaptionLbl : Label 'Total Time';
+        RtngLnRunTimeUOMCodeCptnLbl : Label 'Time Unit';
+}
+
