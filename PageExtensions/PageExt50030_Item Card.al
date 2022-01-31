@@ -15,29 +15,29 @@ pageextension 50030 ItemCardExt extends "Item Card"
         {
             Visible = false;
         }
-        moveafter("Base Unit of Measure";"Assembly BOM")
-        moveafter("Assembly BOM"; "Shelf No.")
+        //moveafter("Base Unit of Measure";"Assembly BOM")
+        //moveafter("Assembly BOM"; "Shelf No.")
         moveafter("Shelf No."; "Automatic Ext. Texts")
-        moveafter("Automatic Ext. Texts";"Created From Nonstock Item")
-        moveafter("Created From Nonstock Item";"Item Category Code")
+        moveafter("Automatic Ext. Texts"; "Created From Nonstock Item")
+        moveafter("Created From Nonstock Item"; "Item Category Code")
         modify("Item Category Code")
         {
             trigger OnAfterValidate();
             var
-                recItemCategory : Record "Item Category";
-                recItemGroup : Record "Product Group";
-                recItemFamily : Record "Technical Family";
+                recItemCategory: Record "Item Category";
+                //recItemGroup : Record "Product Group";
+                recItemFamily: Record "Technical Family";
             begin
                 IF recItemCategory.GET("Item Category Code") THEN
-                    txtItemCategory:=recItemCategory.Description
+                    txtItemCategory := recItemCategory.Description
                 ELSE
                     CLEAR(txtItemCategory);
-                IF recItemGroup.GET("Item Category Code","Product Group Code") THEN
-                    txtItemGroup:=recItemGroup.Description
+                IF recItemGroup.GET("Item Category Code", "Product Group Code") THEN
+                    txtItemGroup := recItemGroup.Description
                 ELSE
                     CLEAR(txtItemGroup);
                 IF recItemFamily.GET("Technical Family Code") THEN
-                    txtItemFamily:=recItemFamily.Description
+                    txtItemFamily := recItemFamily.Description
                 ELSE
                     CLEAR(txtItemFamily);
             end;
@@ -46,27 +46,27 @@ pageextension 50030 ItemCardExt extends "Item Card"
         {
             trigger OnAfterValidate();
             var
-                recItemCategory : Record "Item Category";
-                recItemGroup : Record "Product Group";
-                recItemFamily : Record "Technical Family";
+                recItemCategory: Record "Item Category";
+                recItemGroup: Record "Product Group";
+                recItemFamily: Record "Technical Family";
             begin
                 IF recItemCategory.GET("Item Category Code") THEN
-                    txtItemCategory:=recItemCategory.Description
+                    txtItemCategory := recItemCategory.Description
                 ELSE
                     CLEAR(txtItemCategory);
-                IF recItemGroup.GET("Item Category Code","Product Group Code") THEN
-                    txtItemGroup:=recItemGroup.Description
+                IF recItemGroup.GET("Item Category Code", "Product Group Code") THEN
+                    txtItemGroup := recItemGroup.Description
                 ELSE
                     CLEAR(txtItemGroup);
                 IF recItemFamily.GET("Technical Family Code") THEN
-                    txtItemFamily:=recItemFamily.Description
+                    txtItemFamily := recItemFamily.Description
                 ELSE
                     CLEAR(txtItemFamily);
             end;
         }
         addafter("Item Category Code")
         {
-            field(txtItemCategory;txtItemCategory)
+            field(txtItemCategory; txtItemCategory)
             {
 
             }
@@ -74,38 +74,38 @@ pageextension 50030 ItemCardExt extends "Item Card"
         moveafter(txtItemCategory; "Product Group Code")
         addafter("Product Group Code")
         {
-            field(txtItemGroup;txtItemGroup)
+            field(txtItemGroup; txtItemGroup)
             {
 
             }
-            field("Technical Family Code";"Technical Family Code")
+            field("Technical Family Code"; "Technical Family Code")
             {
                 trigger OnValidate();
                 var
-                    recItemCategory : Record "Item Category";
-                    recItemGroup : Record "Product Group";
-                    recItemFamily : Record "Technical Family";
+                    recItemCategory: Record "Item Category";
+                    recItemGroup: Record "Product Group";
+                    recItemFamily: Record "Technical Family";
                 begin
                     IF recItemCategory.GET("Item Category Code") THEN
-                        txtItemCategory:=recItemCategory.Description
+                        txtItemCategory := recItemCategory.Description
                     ELSE
                         CLEAR(txtItemCategory);
-                    IF recItemGroup.GET("Item Category Code","Product Group Code") THEN
-                        txtItemGroup:=recItemGroup.Description
+                    IF recItemGroup.GET("Item Category Code", "Product Group Code") THEN
+                        txtItemGroup := recItemGroup.Description
                     ELSE
                         CLEAR(txtItemGroup);
                     IF recItemFamily.GET("Technical Family Code") THEN
-                        txtItemFamily:=recItemFamily.Description
+                        txtItemFamily := recItemFamily.Description
                     ELSE
                         CLEAR(txtItemFamily);
                 end;
             }
-            field(TxtItemFamily;TxtItemFamily) { }
-            field("Clasificación LOC";"Clasificación LOC") { }
+            field(TxtItemFamily; TxtItemFamily) { }
+            field("Clasificación LOC"; "Clasificación LOC") { }
         }
         addafter("Service Item Group")
         {
-            field(BlockedExt;Blocked)
+            field(BlockedExt; Blocked)
             {
                 Editable = BlockedEditable;
             }
@@ -114,7 +114,7 @@ pageextension 50030 ItemCardExt extends "Item Card"
         addafter("Last Date Modified")
         {
             //-HEB.187
-            field("REACH No.";"REACH No.") { }
+            field("REACH No."; "REACH No.") { }
             //+HEB.187
         }
         moveafter("Purch. Unit of Measure"; "Lead Time Calculation")
@@ -132,7 +132,7 @@ pageextension 50030 ItemCardExt extends "Item Card"
         moveafter("Net Invoiced Qty."; "Allow Invoice Disc.")
         addafter("Allow Invoice Disc.")
         {
-            field(BlockedExtInv;Blocked)
+            field(BlockedExtInv; Blocked)
             {
                 Editable = BlockedEditable;
             }
@@ -141,13 +141,13 @@ pageextension 50030 ItemCardExt extends "Item Card"
         moveafter("Item Disc. Group"; "Sales Unit of Measure")
         addafter("Sales Unit of Measure")
         {
-            field("Unit List Price Inv";"Unit List Price") { }
-            field("Unit List Price 2 Inv";"Unit List Price 2") { }
-        } 
+            field("Unit List Price Inv"; "Unit List Price") { }
+            field("Unit List Price 2 Inv"; "Unit List Price 2") { }
+        }
         addafter(Purchase)
         {
-            field("Unit List Price";"Unit List Price") { }
-            field("Unit List Price 2";"Unit List Price 2") { }
+            field("Unit List Price"; "Unit List Price") { }
+            field("Unit List Price 2"; "Unit List Price 2") { }
         }
         movebefore("Item Tracking"; ForeignTrade)
         movelast(ForeignTrade; "Net Weight")
@@ -155,8 +155,8 @@ pageextension 50030 ItemCardExt extends "Item Card"
         //-HEB.232
         addlast("Item Tracking")
         {
-            field("Skip Adjust Cost Item Entries";"Skip Adjust Cost Item Entries") { }
-            field("Product Out-Dated";"Product Out-Dated")
+            field("Skip Adjust Cost Item Entries"; "Skip Adjust Cost Item Entries") { }
+            field("Product Out-Dated"; "Product Out-Dated")
             {
                 Editable = ProductOutdatedEditable;
             }
@@ -167,14 +167,14 @@ pageextension 50030 ItemCardExt extends "Item Card"
             group(ADR)
             {
                 Caption = 'ADR';
-                field("UN No.";"UN No.") { }
-                field("Nombre del Producto";"Nombre del Producto") { }
-                field("Descripción ADR (Carta Portes)";"Descripción ADR (Carta Portes)") { }
-                field(Estado;Estado) { }
-                field("Packaging Group";"Packaging Group") { }
-                field(Etiqueta;Etiqueta) { }
+                field("UN No."; "UN No.") { }
+                field("Nombre del Producto"; "Nombre del Producto") { }
+                field("Descripción ADR (Carta Portes)"; "Descripción ADR (Carta Portes)") { }
+                field(Estado; Estado) { }
+                field("Packaging Group"; "Packaging Group") { }
+                field(Etiqueta; Etiqueta) { }
                 //-HEB.173
-                field("Cód. Tunel";"Cód. Tunel") { }
+                field("Cód. Tunel"; "Cód. Tunel") { }
                 //+HEB.173
             }
         }
@@ -200,7 +200,7 @@ pageextension 50030 ItemCardExt extends "Item Card"
                 Image = ItemAvailability;
                 trigger OnAction();
                 var
-                    f50013 : Page "Stock Prod. x Almacen y Lote";
+                    f50013: Page "Stock Prod. x Almacen y Lote";
                 begin
                     f50013.setSource("No.");
                     f50013.RUN;
@@ -209,18 +209,18 @@ pageextension 50030 ItemCardExt extends "Item Card"
         }
     }
     var
-        ItemCostFieldsVisible : Boolean;
+        ItemCostFieldsVisible: Boolean;
         //-HEB.201
-        BlockedEditable : Boolean;
-        ProductOutdatedEditable : Boolean;
+        BlockedEditable: Boolean;
+        ProductOutdatedEditable: Boolean;
         //+HEB.201
-        txtItemCategory : Text[50];
-        txtItemGroup : Text[50];
-        txtItemFamily : Text[50];
+        txtItemCategory: Text[50];
+        txtItemGroup: Text[50];
+        txtItemFamily: Text[50];
 
     trigger OnOpenPage();
     var
-        ConfUsu : Record "User Setup";
+        ConfUsu: Record "User Setup";
     begin
         ItemCostFieldsVisible := false;
         BlockedEditable := false;
@@ -232,18 +232,19 @@ pageextension 50030 ItemCardExt extends "Item Card"
             //+HEB.201
         end;
     end;
+
     trigger OnAfterGetRecord();
     var
-        recItemCategory : Record "Item Category";
-        recItemGroup : Record "Product Group";
-        recItemFamily : Record "Technical Family";
+        recItemCategory: Record "Item Category";
+        recItemGroup: Record "Product Group";
+        recItemFamily: Record "Technical Family";
 
     begin
         IF recItemCategory.GET("Item Category Code") THEN
             txtItemCategory := recItemCategory.Description
         ELSE
             CLEAR(txtItemCategory);
-        IF recItemGroup.GET("Item Category Code","Product Group Code") THEN
+        IF recItemGroup.GET("Item Category Code", "Product Group Code") THEN
             txtItemGroup := recItemGroup.Description
         ELSE
             CLEAR(txtItemGroup);
