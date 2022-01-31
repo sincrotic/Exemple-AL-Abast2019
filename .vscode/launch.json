@@ -7,7 +7,7 @@
             "type" :"al",
             "request": "launch",
             "server": "http://localhost",      // "serverInstance": "DynamicsNAV110",
-            "serverInstance": "dnav11",            // "server":"http://192.168.242.165"                       
+            "serverInstance": "bc140",            // "server":"http://192.168.242.165"                       
             "port":7049,
             "authentication": "Windows",
             "startupObjectId": 22,               
